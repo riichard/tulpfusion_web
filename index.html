@@ -1,101 +1,643 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap" rel="stylesheet">
-<title>Tulp Fusion - The New Wave of Fusion Plasma Models</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tulp Fusion Foundation — Computational Methods for Fusion Transport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
 <style>
-    /* Set the background image and make it cover the entire page */
-    body, html {
-        height: 100%;
-        margin: 0;
-          font-family: "Ropa Sans", sans-serif;
-          font-weight: 400;
-          font-style: normal;
-    }
+  :root {
+    --primary: #1A365D;
+    --text: #283439;
+    --text-soft: #4a5a63;
+    --text-mute: #6b7a82;
+    --bg: #f7fafc;
+    --surface: #eff4f7;
+    --surface-2: #e6edf2;
+    --accent: #C53030;
+    --max: 1180px;
+    --pad-x: clamp(24px, 5vw, 72px);
+    --radius: 2px;
+  }
 
-    .background-image {
-        /* Set the background image */
-        background-color: black;
-        background-image: url('background.jpeg');
-        
-        /* Full screen background */
-        height: 100%; 
-        
-        /* Center and scale the image nicely */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    font-optical-sizing: auto;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-    .text-background {
-        background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.7));
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-    }
+  ::selection { background: #1A365D; color: #f7fafc; }
 
-    /* Overlay content on background */
-    .text-content {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 50%;
-        height: 100%;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 50px 50px 50px 150px;
-        box-sizing: border-box;
-    }
+  a { color: inherit; }
 
-    h1 {
-        margin: 0;
-        font-size: 3em;
-    }
-    .logo {
-        font-size: 6em;
-    }
-    p,a {
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(247, 250, 252, 0.72);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    transition: box-shadow 240ms ease, background 240ms ease;
+  }
+  .nav.scrolled {
+    background: rgba(247, 250, 252, 0.82);
+    box-shadow: 0 1px 0 rgba(40, 52, 57, 0.06);
+  }
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 18px var(--pad-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    font-family: 'Manrope', system-ui, sans-serif;
+  }
+  .brand {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+    color: var(--primary);
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    object-fit: contain;
+    display: block;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-soft);
+    text-decoration: none;
+    letter-spacing: 0.005em;
+    position: relative;
+    padding: 6px 0;
+    transition: color 160ms ease;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%;
+    bottom: 2px;
+    height: 1px;
+    background: var(--primary);
+    transition: right 220ms ease;
+  }
+  .nav-links a:hover::after { right: 0; }
+  .nav-links a.active { color: var(--primary); }
+  .nav-links a.active::after { right: 0; }
 
-        font-size: 2em;
-    }
+  @media (max-width: 640px) {
+    .nav-links { gap: 20px; }
+    .nav-links a { font-size: 13px; }
+    .brand { font-size: 13.5px; }
+  }
 
-    /* Adjustments for screens narrower than 1000 pixels */
-    @media (max-width: 1000px) {
-        .text-content {
-            width: 100%; /* Full width */
-            background: rgba(0,0,0,0.5); /* No gradient */
-            padding-left: 20px;
-        }
-    }
+  /* ---------- Layout ---------- */
+  section {
+    padding: clamp(72px, 10vw, 128px) 0;
+  }
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad-x);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .grid-2 { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ---------- Type ---------- */
+  .label {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin: 0;
+  }
+  .label-soft {
+    color: var(--text-mute);
+  }
+
+  h1, h2, h3 {
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(40px, 6.4vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+  }
+  h2 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    line-height: 1.12;
+    margin-top: 14px;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.45;
+    color: var(--text);
+    font-weight: 400;
+    margin: 28px 0 0;
+    max-width: 32ch;
+    text-wrap: pretty;
+  }
+
+  .body {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .body + .body { margin-top: 1em; }
+
+  .meta {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--text-mute);
+    font-weight: 500;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding-top: clamp(80px, 12vw, 160px);
+    padding-bottom: clamp(96px, 14vw, 200px);
+    background: var(--bg);
+  }
+  .hero .meta {
+    margin-top: clamp(32px, 5vw, 56px);
+    display: inline-block;
+    color: var(--primary);
+    border-top: 0;
+    position: relative;
+    padding-top: 18px;
+  }
+  .hero .meta::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px;
+    height: 1px;
+    background: var(--primary);
+    opacity: 0.55;
+  }
+
+  /* ---------- Research / Activity / Contact ---------- */
+  .surface { background: var(--surface); }
+  .surface-2 { background: var(--surface-2); }
+
+  /* ---------- People ---------- */
+  .people-group {
+    margin-top: 56px;
+  }
+  .people-group:first-of-type { margin-top: 0; }
+
+  .group-label {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--primary);
+    margin: 0 0 24px;
+  }
+
+  .person {
+    padding: 28px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 64px);
+    align-items: start;
+    border-top: 1px solid rgba(26, 54, 93, 0.10);
+  }
+  .person:first-of-type { /* keep border for separation */ }
+  .person-name {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.005em;
+    line-height: 1.35;
+  }
+  .person-role {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mute);
+    margin-top: 6px;
+    letter-spacing: 0.01em;
+  }
+  .person-bio {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  @media (max-width: 760px) {
+    .person { grid-template-columns: 1fr; gap: 12px; padding: 24px 0; }
+  }
+
+  /* The spec says "no borders." We use a subtle background-tone divider instead. */
+  /* Override: replace borders with a thin tone shift via pseudo */
+  .person { border-top: 0; position: relative; }
+  .person + .person::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(26,54,93,0.12), rgba(26,54,93,0));
+    width: 64px;
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    margin-top: 36px;
+  }
+  @media (max-width: 760px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+  .contact-block .field-label {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin: 0 0 8px;
+  }
+  .contact-block .field-value {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--primary);
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+  }
+  a.field-value::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: var(--primary);
+    opacity: 0.25;
+    transition: opacity 180ms ease;
+  }
+  a.field-value:hover::after { opacity: 1; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 56px 0 64px;
+    background: var(--bg);
+  }
+  .footer-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-line {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+  .footer-line strong {
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .footer-meta {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--text-mute);
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+
+  /* ---------- subtle reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 700ms ease, transform 700ms ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* hero accent rule under primary heading */
+  .rule {
+    display: inline-block;
+    width: 56px;
+    height: 1px;
+    background: var(--primary);
+    opacity: 0.55;
+    margin: 0 0 28px;
+  }
+
+  /* ---------- Figures ---------- */
+  figure {
+    margin: 0 0 48px;
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+  figcaption {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-mute);
+    margin-top: 14px;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  /* Full-bleed band image (sits between sections) */
+  .band {
+    background: var(--surface);
+    padding: 0;
+  }
+  .band img {
+    display: block;
+    width: 100%;
+    height: clamp(280px, 42vw, 520px);
+    object-fit: cover;
+    object-position: center;
+  }
+  .band figure { margin: 0; }
+  .band figcaption {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 18px var(--pad-x) 24px;
+  }
 </style>
 </head>
 <body>
-<div class="background-image">
-    <div class="text-background">
-        <div class="text-content">
-            <div>
-                <h1 class="logo">Tulp Fusion</h1>
-                <br />
-                <br />
-                <h1>The New Wave of Fusion Plasma Models</h1>
-                <br />
-                <br />
-                <p>We develop advanced deep learning models to optimize plasma control
-                strategies, enhancing stability and performance in fusion reactors.</p>
-                <a href="mailto:partner@tulpfusion.com"
-                   style="color:white;text-decoration:none;font-style:italic;">partner@tulpfusion.com</p>
-            </div>
-        </div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="Tulp Fusion Foundation">
+      <img class="brand-mark" src="media/logo.png" alt="" />
+      <span>Tulp Fusion Foundation</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#research">Research</a>
+      <a href="#activity">Activity</a>
+      <a href="#people">People</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <span class="rule reveal"></span>
+      <h1 class="reveal">Computational&nbsp;Methods<br/>for Fusion Transport</h1>
+      <p class="lede reveal">Independent research foundation developing machine learning surrogates for tokamak simulation codes.</p>
+      <p class="meta reveal">Registered non-profit (stichting) — Amsterdam, the Netherlands</p>
     </div>
-</div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" class="surface">
+    <div class="container">
+      <div class="grid-2">
+        <p class="label reveal">Research</p>
+        <div>
+          <h2 class="reveal">Computational Methods for Fusion Transport</h2>
+          <p class="body reveal" style="margin-top: 28px;">
+            We apply machine learning methods to accelerate computational workflows in fusion transport modeling — developing surrogates for gyrokinetic transport codes and validating against established physics benchmarks. Our tools are open-source and built on JAX.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section id="activity">
+    <div class="container">
+      <div class="grid-2">
+        <p class="label reveal">Activity</p>
+        <div>
+          <figure class="reveal">
+            <img src="media/iis-2025-lecture.jpg" alt="Lecture session at the 14th ITER International School in Aix-en-Provence, with a slide on burning-plasma core physics projected on screen." loading="lazy" />
+            <figcaption>Lecture session — 14th ITER International School, Aix-en-Provence, July 2025.</figcaption>
+          </figure>
+          <h2 class="reveal">14th ITER International School — 2025</h2>
+          <p class="body reveal" style="margin-top: 28px;">
+            Tulp Fusion served on the organizing committee for the 14th ITER International School on Integrated Modelling, held in Aix-en-Provence. The school was directed by Dr. Xavier Litaudon (EUROfusion) and Dr. Alberto Loarte (ITER), in partnership with Aix-Marseille Universite.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEOPLE -->
+  <section id="people" class="surface">
+    <div class="container">
+      <div class="grid-2">
+        <p class="label reveal">People</p>
+        <div>
+
+          <div class="people-group">
+            <p class="group-label reveal">Scientific Leadership</p>
+
+            <article class="person reveal">
+              <div>
+                <div class="person-name">Prof. Sadruddin Benkadda</div>
+                <div class="person-role">Scientific Director</div>
+              </div>
+              <p class="person-bio">CNRS Research Director at Aix-Marseille Universite. Founder of the ITER International School. Co-author of ITER Physics. Published extensively on MHD turbulence, anomalous transport, and nonlinear dynamics in magnetized plasmas.</p>
+            </article>
+
+            <article class="person reveal">
+              <div>
+                <div class="person-name">Dr. Xavier Litaudon</div>
+                <div class="person-role">Scientific Advisor</div>
+              </div>
+              <p class="person-bio">CEA Research Director. EUROfusion project leader for Preparation of ITER Operation. Led the JET Task Force and the final 2023 deuterium-tritium campaigns. Founded CICLOP, the IEA-IAEA coordination network on long-pulse fusion operation. Pioneer of the CRONOS integrated tokamak modelling suite. 250+ publications.</p>
+            </article>
+          </div>
+
+          <div class="people-group">
+            <p class="group-label reveal">Advisory Board</p>
+
+            <article class="person reveal">
+              <div>
+                <div class="person-name">Christopher Springham</div>
+                <div class="person-role">Strategic Advisor</div>
+              </div>
+              <p class="person-bio">Over 30 years in energy sector communications. Former VP at GE Renewable Energy. Director of Media Relations at Rolls-Royce. White House Media Staff, Clinton administration.</p>
+            </article>
+          </div>
+
+          <div class="people-group">
+            <p class="group-label reveal">Foundation</p>
+
+            <article class="person reveal">
+              <div>
+                <div class="person-name">Richard Kraaijenhagen</div>
+                <div class="person-role">Director</div>
+              </div>
+              <p class="person-bio">Founded Owlin (ML). Engineering lead for optical diagnostics at Nostics. Applies ML and signal processing methods to fusion simulation workflows.</p>
+            </article>
+
+            <article class="person reveal">
+              <div>
+                <div class="person-name">Linsey Groot</div>
+                <div class="person-role">Operations Director</div>
+              </div>
+              <p class="person-bio">Organizational strategy and governance. Non-profit management background.</p>
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="grid-2">
+        <p class="label reveal">Contact</p>
+        <div>
+          <h2 class="reveal">Collaboration and Research Inquiries</h2>
+          <div class="contact-grid">
+            <div class="contact-block reveal">
+              <p class="field-label">Email</p>
+              <a class="field-value" href="mailto:contact@tulpfusion.com">contact@tulpfusion.com</a>
+            </div>
+            <div class="contact-block reveal">
+              <p class="field-label">Location</p>
+              <span class="field-value">Amsterdam, the Netherlands</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-line"><strong>Tulp Fusion Foundation</strong> — Independent research in computational fusion science.</p>
+    <p class="footer-meta">© 2026 Tulp Fusion Foundation. Registered non-profit (stichting), the Netherlands.</p>
+  </div>
+</footer>
+
+<script>
+  // Nav shadow on scroll
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if (window.scrollY > 8) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Active nav link
+  const links = document.querySelectorAll('.nav-links a');
+  const sections = ['research','activity','people','contact']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        links.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => navObs.observe(s));
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const revObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revObs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  reveals.forEach(r => revObs.observe(r));
+</script>
+
 </body>
 </html>
-
