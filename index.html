@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tulp Fusion Foundation — Computational Methods for Fusion Transport</title>
-<meta name="description" content="Independent research foundation applying machine learning to accelerate fusion transport modeling. Open-source, JAX-native. Amsterdam, the Netherlands." />
+<title>Tulp Fusion Foundation — Differentiable Simulation for Fusion Plasmas</title>
+<meta name="description" content="Independent research foundation building differentiable plasma turbulence solvers and gradient-based inference methods, validated against published benchmarks. Amsterdam, the Netherlands." />
 <meta property="og:title" content="Tulp Fusion Foundation" />
-<meta property="og:description" content="Independent research foundation applying machine learning to accelerate fusion transport modeling. Open-source, JAX-native." />
+<meta property="og:description" content="Independent research foundation building differentiable plasma turbulence solvers and gradient-based inference methods, validated against published benchmarks." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://tulpfusion.com" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Tulp Fusion Foundation" />
-<meta name="twitter:description" content="Independent research foundation applying machine learning to accelerate fusion transport modeling. Open-source, JAX-native." />
+<meta name="twitter:description" content="Independent research foundation building differentiable plasma turbulence solvers and gradient-based inference methods, validated against published benchmarks." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
@@ -240,6 +240,105 @@
   .surface { background: var(--surface); }
   .surface-2 { background: var(--surface-2); }
 
+  /* ---------- Results video ---------- */
+  .results-video {
+    width: 100%;
+    display: block;
+    border-radius: 2px;
+  }
+  .results-video-caption {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-mute);
+    margin-top: 14px;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  /* ---------- Key numbers strip ---------- */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 48px 0;
+  }
+  .stat-box {
+    background: var(--bg);
+    border-radius: 4px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: clamp(18px, 2.4vw, 26px);
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  @media (max-width: 760px) {
+    .stats-strip { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  }
+  @media (max-width: 420px) {
+    .stats-strip { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Benchmark table ---------- */
+  .benchmark-wrap {
+    overflow-x: auto;
+    margin: 0 0 48px;
+  }
+  .benchmark {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+  .benchmark th {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid rgba(26, 54, 93, 0.15);
+    white-space: nowrap;
+  }
+  .benchmark td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(26, 54, 93, 0.07);
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .benchmark td:first-child {
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .benchmark-note {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text-mute);
+    margin-top: 14px;
+    line-height: 1.55;
+    max-width: 72ch;
+  }
+
   /* ---------- People ---------- */
   .people-group {
     margin-top: 56px;
@@ -292,8 +391,6 @@
     .person { grid-template-columns: 1fr; gap: 12px; padding: 24px 0; }
   }
 
-  /* The spec says "no borders." We use a subtle background-tone divider instead. */
-  /* Override: replace borders with a thin tone shift via pseudo */
   .person { border-top: 0; position: relative; }
   .person + .person::before {
     content: "";
@@ -457,6 +554,7 @@
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#research">Research</a>
+      <a href="#results">Results</a>
       <a href="#activity">Activity</a>
       <a href="#people">People</a>
       <a href="#contact">Contact</a>
@@ -470,8 +568,8 @@
   <section class="hero">
     <div class="container">
       <span class="rule reveal"></span>
-      <h1 class="reveal">Computational&nbsp;Methods<br/>for Fusion Transport</h1>
-      <p class="lede reveal">Independent research foundation developing machine learning surrogates for tokamak simulation codes.</p>
+      <h1 class="reveal">Differentiable&nbsp;Simulation<br/>for Fusion Plasmas</h1>
+      <p class="lede reveal">Independent research foundation building differentiable plasma turbulence solvers and gradient-based inference methods, validated against published benchmarks.</p>
       <p class="meta reveal">Registered non-profit (stichting) — Amsterdam, the Netherlands</p>
     </div>
   </section>
@@ -483,8 +581,119 @@
         <p class="label reveal">Research</p>
         <div>
           <p class="body reveal">
-            We apply machine learning methods to accelerate computational workflows in fusion transport modeling — developing surrogates for gyrokinetic transport codes and validating against established physics benchmarks. We build on open-source tools and JAX, and commit to publishing our methods and code openly.
+            We develop fully differentiable pseudo-spectral solvers for plasma turbulence — enabling gradient-based parameter inference, state estimation, and data assimilation directly through the turbulent dynamics. Our Hasegawa-Wakatani solver is validated against Biskamp (1994) and Camargo (1995) benchmarks at resolutions up to 1024², and cross-validated against independent implementations. Built in JAX; all methods and code will be published openly.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="surface-2">
+    <div class="container">
+      <div class="grid-2">
+        <p class="label reveal">Results</p>
+        <div>
+
+          <!-- Video -->
+          <div class="reveal">
+            <video class="results-video" autoplay muted loop playsinline>
+              <source src="media/hw-turbulence.mp4" type="video/mp4" />
+            </video>
+            <p class="results-video-caption">Direct numerical simulation of Hasegawa-Wakatani drift-wave turbulence. C&nbsp;=&nbsp;1.0, N&nbsp;=&nbsp;512, pseudo-spectral IMEX ETD-RK4 solver. Fully differentiable — gradients flow through every timestep.</p>
+          </div>
+
+          <!-- Key numbers -->
+          <div class="stats-strip reveal">
+            <div class="stat-box">
+              <div class="stat-value">&lt;&thinsp;1%</div>
+              <div class="stat-label">Parameter recovery<br/>7/7 C values</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">0.024%</div>
+              <div class="stat-label">Field reconstruction<br/>φ relative error</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">10⁵×</div>
+              <div class="stat-label">Error reduction<br/>14 DA cycles</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">0.01</div>
+              <div class="stat-label">Biskamp k⁻³ slope<br/>accuracy</div>
+            </div>
+          </div>
+
+          <!-- Benchmark table -->
+          <div class="benchmark-wrap reveal">
+            <table class="benchmark">
+              <thead>
+                <tr>
+                  <th>Quantity</th>
+                  <th>C = 1.0 (ours)</th>
+                  <th>C = 1.0 (ref)</th>
+                  <th>Error</th>
+                  <th>C = 5.0 (ours)</th>
+                  <th>C = 5.0 (ref)</th>
+                  <th>Error</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Total energy E</td>
+                  <td>3.82 ± 0.21</td>
+                  <td>4.4</td>
+                  <td>13%</td>
+                  <td>6.76 ± 0.38</td>
+                  <td>8.3</td>
+                  <td>19%</td>
+                </tr>
+                <tr>
+                  <td>Particle flux Γₙ</td>
+                  <td>0.61 ± 0.05</td>
+                  <td>0.73</td>
+                  <td>17%</td>
+                  <td>0.129 ± 0.019</td>
+                  <td>0.13</td>
+                  <td>1%</td>
+                </tr>
+                <tr>
+                  <td>Partition Eᴺ/E</td>
+                  <td>0.551 ± 0.009</td>
+                  <td>0.57</td>
+                  <td>3%</td>
+                  <td>0.753 ± 0.018</td>
+                  <td>0.77</td>
+                  <td>2%</td>
+                </tr>
+                <tr>
+                  <td>Eₖ slope</td>
+                  <td>−2.30 ± 0.20</td>
+                  <td>−2.9</td>
+                  <td>—</td>
+                  <td>−3.47 ± 0.06</td>
+                  <td>−3.5</td>
+                  <td>1%</td>
+                </tr>
+                <tr>
+                  <td>Eₖᴺ slope</td>
+                  <td>−2.67 ± 0.18</td>
+                  <td>−2.7</td>
+                  <td>1%</td>
+                  <td>−4.56 ± 0.08</td>
+                  <td>−4.2</td>
+                  <td>9%</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="benchmark-note">Camargo, Biskamp &amp; Scott, <em>Phys. Plasmas</em> 2 (1995) 48–62, Tables I &amp; II. N&nbsp;=&nbsp;512, ν&nbsp;=&nbsp;10⁻⁸, ∇⁶ hyperviscosity. Cross-validated against hw2d (Greif, github.com/the-rccg/hw2d) — both solvers agree to within 1–2%, confirming the ~15% offset from Camargo 1995 is a systematic numerical-protocol difference, not a coding error.</p>
+          </div>
+
+          <!-- State estimation figure -->
+          <figure class="reveal">
+            <img src="media/state-estimation.png" alt="Full turbulent field recovered from spectral observations via gradient-based optimization — 2×3 grid showing true, reconstructed, and error fields for potential and density." loading="lazy" />
+            <figcaption>Full turbulent field recovered from spectral observations via gradient-based optimization. Potential φ relative error 0.024%, density n relative error 0.009%.</figcaption>
+          </figure>
+
         </div>
       </div>
     </div>
@@ -534,6 +743,7 @@
               </div>
               <p class="person-bio">CEA Research Director. EUROfusion project leader for Preparation of ITER Operation. Led the JET Task Force and the final 2023 deuterium-tritium campaigns. Founded CICLOP, the IEA-IAEA coordination network on long-pulse fusion operation. Pioneer of the CRONOS integrated tokamak modelling suite. 250+ publications.</p>
             </article>
+
           </div>
 
           <div class="people-group">
@@ -556,7 +766,7 @@
                 <div class="person-name">Richard Kraaijenhagen</div>
                 <div class="person-role">Director</div>
               </div>
-              <p class="person-bio">Founded Owlin (ML). Engineering lead for optical diagnostics at Nostics. Applies ML and signal processing methods to fusion simulation workflows.</p>
+              <p class="person-bio">Founded Owlin. Engineering lead for optical diagnostics at Nostics. Develops differentiable PDE solvers and data assimilation methods for plasma turbulence. Validated the foundation's Hasegawa-Wakatani solver against Biskamp and Camargo benchmarks.</p>
             </article>
 
             <article class="person reveal">
@@ -616,7 +826,7 @@
 
   // Active nav link
   const links = document.querySelectorAll('.nav-links a');
-  const sections = ['research','activity','people','contact']
+  const sections = ['research','results','activity','people','contact']
     .map(id => document.getElementById(id))
     .filter(Boolean);
 
